@@ -208,7 +208,11 @@ int main(int argc, char *argv[]) {
             std::string output_dir = second_arg;
             if (file_system::is_file(first_arg)) {
                 std::vector<std::string> cloud_files = {first_arg};
-                return batch_reconstruct(cloud_files, output_dir, export_skeleton) > 0;
+                //return batch_reconstruct(cloud_files, output_dir, export_skeleton) > 0;
+                if (batch_reconstruct(cloud_files, output_dir, export_skeleton) > 0) {
+                    return EXIT_SUCCESS;
+                } else
+                    return EXIT_FAILURE;
             } else if (file_system::is_directory(first_arg)) {
                 std::vector<std::string> entries;
                 file_system::get_directory_entries(first_arg, entries, false);
@@ -217,7 +221,11 @@ int main(int argc, char *argv[]) {
                     if (file_name.size() > 3 && file_name.substr(file_name.size() - 3) == "xyz")
                         cloud_files.push_back(first_arg + "/" + file_name);
                 }
-                return batch_reconstruct(cloud_files, output_dir, export_skeleton) > 0;
+                // return batch_reconstruct(cloud_files, output_dir, export_skeleton) > 0;
+                if (batch_reconstruct(cloud_files, output_dir, export_skeleton) > 0) {
+                    return EXIT_SUCCESS;
+                } else
+                    return EXIT_FAILURE;
             } else
                 std::cerr
                         << "WARNING: unknown first argument (expecting either a point cloud file in *.xyz format or a\n"
